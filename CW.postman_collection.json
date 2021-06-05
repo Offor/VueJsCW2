@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "9c205cd2-6c92-4c6d-9068-57812e2e86aa",
+		"name": "CW",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Data Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://individualwebcw2.herokuapp.com/collection/lessons",
+					"protocol": "https",
+					"host": [
+						"individualwebcw2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"collection",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Data Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n                \"id\": 2,\n                \"subject\": \"English\",\n                \"location\": \"Manchester\",\n                \"price\": 80,\n                \"spaces\": 5,\n                \"image\": \"images/english.jpg\"\n            },\n            {\n                \"id\": 3,\n                \"subject\": \"Physics\",\n                \"location\": \"Dubai\",\n                \"price\": 90,\n                \"spaces\": 5,\n                \"image\": \"images/physics.jpg\"\n            },\n            {\n                \"id\": 4,\n                \"subject\": \"Chemistry\",\n                \"location\": \"Lagos\",\n                \"price\": 120,\n                \"spaces\": 5,\n                \"image\": \"images/chemistry.jpg\"\n            },\n            {\n                \"id\": 5,\n                \"subject\": \"History\",\n                \"location\": \"Berlin\",\n                \"price\": 40,\n                \"spaces\": 5,\n                \"image\": \"images/history.jpg\"\n            },\n            {\n                \"id\": 6,\n                \"subject\": \"Geography\",\n                \"location\": \"California\",\n                \"price\": 30,\n                \"spaces\": 5,\n                \"image\": \"images/geography.jpg\"\n            },\n            {\n                \"id\": 7,\n                \"subject\": \"Music\",\n                \"location\": \"Birmingham\",\n                \"price\": 180,\n                \"spaces\": 5,\n                \"image\": \"images/music.jpg\"\n            },\n            {\n                \"id\": 8,\n                \"subject\": \"Art\",\n                \"location\": \"Nairobi\",\n                \"price\": 80,\n                \"spaces\": 5,\n                \"image\": \"images/art.jpg\"\n            },\n            {\n                \"id\": 9,\n                \"subject\": \"Physical Education\",\n                \"location\": \"Oxford\",\n                \"price\": 40,\n                \"spaces\": 5,\n                \"image\": \"images/physical.jpg\"\n            },\n            {\n                \"id\": 10,\n                \"subject\": \"Design & Technology\",\n                \"location\": \"Accra\",\n                \"price\": 80,\n                \"spaces\": 5,\n                \"image\": \"images/design.jpg\"\n            }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://individualwebcw2.herokuapp.com/collection/lessons",
+					"protocol": "https",
+					"host": [
+						"individualwebcw2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"collection",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Updating Data Content",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lessons\":\n    [\n        {\n            \"_id\": \"60b7c5cdcaf12308de3577ca\",\n            \"spaces\": 2\n        },\n        {\n            \"_id\": \"60b7c5cdcaf12308de3577ca\",\n            \"spaces\": 1\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://individualwebcw2.herokuapp.com/collection/lessons",
+					"protocol": "https",
+					"host": [
+						"individualwebcw2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"collection",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

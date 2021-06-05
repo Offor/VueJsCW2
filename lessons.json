@@ -1,0 +1,91 @@
+[{
+  "_id": {
+    "$oid": "60b7bfd392239a07da8219ed"
+  },
+  "id": 1,
+  "subject": "Maths",
+  "location": "London",
+  "price": 100,
+  "spaces": 4
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577ca"
+  },
+  "id": 2,
+  "subject": "English",
+  "location": "Manchester",
+  "price": 80,
+  "spaces": 4
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577cb"
+  },
+  "id": 3,
+  "subject": "Physics",
+  "location": "Dubai",
+  "price": 80,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577cc"
+  },
+  "id": 4,
+  "subject": "Chemistry",
+  "location": "Lagos",
+  "price": 120,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577cd"
+  },
+  "id": 5,
+  "subject": "History",
+  "location": "Berlin",
+  "price": 40,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577ce"
+  },
+  "id": 6,
+  "subject": "Geography",
+  "location": "California",
+  "price": 30,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577cf"
+  },
+  "id": 7,
+  "subject": "Music",
+  "location": "Birmingham",
+  "price": 180,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577d0"
+  },
+  "id": 8,
+  "subject": "Art",
+  "location": "Nairobi",
+  "price": 80,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577d1"
+  },
+  "id": 9,
+  "subject": "Physical Education",
+  "location": "Oxford",
+  "price": 40,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "60b7c5cdcaf12308de3577d2"
+  },
+  "id": 10,
+  "subject": "Design & Technology",
+  "location": "Accra",
+  "price": 80,
+  "spaces": 5
+}]
