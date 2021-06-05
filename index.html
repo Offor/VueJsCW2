@@ -73,7 +73,7 @@
                     <div class="mainbody">
                         <div class="col" v-for="(product, index) in filteredData">
                             <figure class="image_box">
-                                <img src="images/art.jpg">
+                                <img v-bind:src="product.image">
                             </figure>
                             <div class="info" >
                                 <h3>{{product.subject}}</h3>
