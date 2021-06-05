@@ -32,7 +32,7 @@ app.param('collectionName', (req, res, next, collectionName) => {
 
 //middleware requesting url
 app.use((req, res, next) => {
-    console.log("Incoming Request to " + req.url);
+    console.log("Incoming Request : " + req.url);
     next();
 })
 
@@ -51,7 +51,7 @@ app.post('/collection/:collectionName', (req, res, next) => {
         message: "Order submitted",
     });
     }).catch((err) => { res.status(404).send({
-        status: false,
+       // status: false,
         message: "Can't submit Order due to error"
     });
     });
@@ -92,15 +92,6 @@ app.put("/collection/:collectionName", (req, res, next) => {
         });
     });
 
-    // req.collection.update(
-    //     {_id: new ObjectID(req.params.id)},
-    //     {$set: req.body},
-    //     {safe: true, multi: false},
-    //     (e, result) => {
-    //         if (e) return next(e)
-    //         res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'})
-    //     }
-    // )
 })
 
 app.delete('/collection/:collectionName/:id', (req, res, next) => {
