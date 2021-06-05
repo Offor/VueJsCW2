@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>After School Club</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link rel="stylesheet" href="https:cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        <link rel="stylesheet" href="main.css">
+
+        <!-- <script type="text/javascript" src="functions.js"></script>  -->
+        
+    </head>
+    <body>
+        <div id="App">
+
+            <!--Nav bar, cart item-->
+            <header class="navbar">
+                <h1 class="sitename">{{sitename}}</h1>
+                <div class="btn_checkout">
+                    <button  v-if="cartItemCount >= 1" class="btn_check" @click="navigateTo('cart')">
+                        <sup> {{cartItemCount}} </sup> Cart
+                        <span class="fas fa-cart-plus"></span> &nbsp;
+                    </button>
+                     <button v-else class="cartButton_disabled"></button> 
+                </div>
+            </header>
+            <main>
+                
+                
+                
+
+                <!-- Start of Lesson Page-->
+                <div class="product" v-if="page === 'lesson'">
+                    <div class="aside">
+                        <!--Input for Sorting by Category-->
+                        <div class="sort-bar" >
+                            <h2 style="padding: 0 0 0 10px;">Sort By:</h2>
+                            <label class="container">
+                                <input type="radio" name="a" v-model="SelectedCategory" value="All"/> All
+                                <span class="checkmark"></span>
+                            </label> <br>
+                            <label class="container">
+                                <input type="radio" name="a" v-model="SelectedCategory" value="subject" /> subject
+                                <span class="checkmark"></span>
+                            </label><br>
+                            <label class="container">
+                                <input type="radio" name="a" v-model="SelectedCategory" value="price" /> Price
+                                <span class="checkmark"></span>
+                            </label><br>
+                            <label class="container">
+                                <input type="radio" v-model="SelectedCategory" value="location" /> Location
+                                <span class="checkmark"></span>
+                            </label><br>
+                            <label class="container">
+                                <input type="radio" v-model="SelectedCategory" value="space" /> Space
+                                <span class="checkmark"></span>
+                            </label> 
+                        </div>
+                        <hr>
+                        <!--Input for Ascending & Descending-->
+                        <div class="ascending_bar">
+                            <label class="container">
+                                <input type="radio" required name="order" v-model="OrderBy" value="asc"/> Ascending
+                                <span class="checkmark"></span>
+                            </label><br>
+                            <label class="container">
+                                <input type="radio" required name="order" v-model="OrderBy" value="dsc" /> Descending
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mainbody">
+                        <div class="col" v-for="(product, index) in filteredData">
+                            <figure class="image_box">
+                                <img src="images/art.jpg">
+                            </figure>
+                            <div class="info" >
+                                <h3>{{product.subject}}</h3>
+                                 <p>Location: {{product.location}}</p>
+                              <p>Price: ${{product.price}}</p>
+                              <p>Space: 
+                                  {{product.spaces}}
+                                </p>
+                                <button class="btn_add"  v-on:click='addToCart(product, index)'  v-if="canAddToCart(product)">Add to Cart</button>
+                                <button class="btn_add_disabled" disabled='disabled' v-else>Add to cart</button>                  
+                            </div>         
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Start of Cart Page-->
+                <div class="checkout" v-if="page === 'cart'">
+                    <button class="btn_check back_btn" id="back_btn" @click="navigateTo('lesson')">Product</button>
+                    <h1>Checkout</h1>
+                    <div class="col" v-for="(product, index) in cart">
+                        <figure class="image_box">
+                            <img v-bind:src="product.image">
+                        </figure>
+                        <div class="info" >
+                            <h3>{{product.subject}}</h3>
+                            <p>ID: {{product.id}}</p>
+                            <p>Location: {{product.location}}</p>
+                            <p>Price: ${{product.price}}</p>
+                            <p>Space: {{product.spaces}} </p>
+                            <button class="btn_add"   v-on:click='removeProduct(index)'>Remove to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Bar-->
+                    <div class="collectData" >
+                        <br>
+                        <label>Name : 
+                            <input placeholder="Rotimi" type="text" v-model="order.name">
+                        </label>
+                        <label> Phone:
+                            <input placeholder="+97138493843" type="number" v-model="order.phoneNumber">
+                        </label>
+                        <button :disabled="isDisabled" class="checkout_btn" v-on:click="SubmitOrder">Checkout</button>
+                    </div>
+                </div>
+            </main>    
+            
+        </div>
+        <script>
+         var webstore = new Vue({
+            el: "#App",
+            data: {
+                sitename: "After School Classes",
+                products: [ ],
+                cart: [],
+                order: {
+                    name:"",
+                    phoneNumber: ""
+                },
+                SelectedCategory: 'All',
+                page: "lesson",
+                OrderBy: "",
+                name: "",
+                phone: "",
+            },
+
+            methods: {
+                addToCart(product, index) {
+                    const productIndex = this.cart.findIndex(l => product.id == l.id);
+                    if(productIndex == -1) {
+                        this.cart.push({
+                            _id: product._id,
+                            id: product.id,
+                            subject: product.subject,
+                            location: product.location,
+                            price: product.price,
+                            spaces: 1
+                        })
+                        this.filteredData[index].spaces--;
+                    } else {
+                        this.cart[productIndex].spaces++;
+                        this.filteredData[index].spaces--;
+                    }
+                },
+
+                canAddToCart(product) {
+                    return product.spaces > this.cartCount(product.id);
+                },
+
+                navigateTo(page) {
+                this.page = page;
+                },
+
+                removeProduct(index) {
+                    this.cart.splice(index, 1);
+                },
+
+                SubmitOrder() {
+                    const Order = {
+                        name: this.order.name,
+                        phoneNumber: this.order.phoneNumber,
+                        products: this.cart.map((item) => {
+                            return {
+                                _id: item._id,
+                                productID: item.id,
+                                spaces: item.spaces,
+                                subject: item.subject,
+                            };
+                        }),
+                    };
+
+                    fetch('http://localhost:3000/collection/order', {
+                        method: "POST",
+                        body: JSON.stringify(Order),
+                        headers: { "Content-Type": "application/json" },
+                    }).then((response) => response.json()).then((res) => {
+                        this.updateLessonSpaces();
+                    });
+                },
+
+                updateLessonSpaces() {
+                    const products = this.cart.map((product) => {
+                        return {_id: product._id, spaces: product.spaces };
+                    });
+
+                    fetch("http://localhost:3000/collection/lessons", {
+                        method: "PUT",
+                        body: JSON.stringify({products}),
+                        headers: { "Content-Type": "application/json"},
+                    }).then((response) => response.json()).then((res) => {
+                        alert("Order submitted successfully");
+                        location.reload();
+                    });
+                },
+
+                cartCount(id) {
+                    let count = 0;
+                    for (let i = 0; i < this.cart.length; i++) {
+                        if(this.cart[i] === id){
+                            count++;
+                        } 
+                    }         
+                    return count; 
+                },
+            },
+
+            created: function() {
+                fetch('http://localhost:3000/collection/lessons').then(
+                    function(res) {
+                        res.json().then(
+                            function(json) {
+                                webstore.products = json;
+                                console.log(json);
+                            }
+                        );
+                    }
+                );
+            },
+
+            computed: {
+                cartItemCount: function() {
+                    var count = 0;
+                    for(let i = 0; i < this.cart.length; i++) {
+                        count += this.cart[i].spaces;
+                    }
+                    return count;
+                },
+
+                isDisabled: function() {
+                    return !this.order.name || !this.order.phoneNumber;
+                },
+
+                filteredData: function() {
+                // let vm = this;
+                    let category = this.SelectedCategory;
+                    const orderBy = this.OrderBy;
+                    if(category === "All") {
+                        return this.products;
+                    } else {
+                        let subjectsArray = this.products.slice(0);
+                        if(category === "subject") {
+                            
+                            function compare(a, b) {
+                                if (a.subject > b.subject)
+                                    return orderBy == 'asc' ? 1 : (orderBy == 'dsc' ? -1 : 1)
+                                if (a.subject < b.subject)
+                                    return orderBy == 'asc' ? -1 : (orderBy == 'dsc' ? 1 : -1)
+                                return 0;
+                            }
+                            return subjectsArray.sort(compare);
+                        } else {
+                            let priceArray = this.products.slice(0);
+                            if(category === "price") {
+                                function compare(pa, pb) {
+                                    if (pa.price > pb.price)
+                                        return orderBy == 'asc' ? 1 : (orderBy == 'dsc' ? -1 : 1)
+                                    if (pa.price < pb.price)
+                                        return orderBy == 'asc' ? -1 : (orderBy == 'dsc' ? 1 : -1)
+                                    return 0;
+                                }
+                                return priceArray.sort(compare);
+                            } else {
+                                let locationArray = this.products.slice(0);
+                                if(category === "location") {
+                                    function compare(la,lb) {
+                                        if (la.location > lb.location)
+                                            return orderBy == 'asc' ? 1 : (orderBy == 'dsc' ? -1 : 1)
+                                        if (la.location < lb.location)
+                                            return orderBy == 'asc' ? -1 : (orderBy == 'dsc' ? 1 : -1)
+                                        return 0;
+                                    }
+                                    return locationArray.sort(compare);
+                                } else {
+                                    let spaceArray = this.products.slice(0);
+                                    if(category === "space") {
+                                        console.log("testing")
+                                        function compare(sa, sb) {
+                                            if (sa.spaces > sb.spaces) 
+                                                return orderBy == 'asc' ? 1 : (orderBy == 'dsc' ? -1 : 1)
+                                            if (sa.spaces < sb.spaces) 
+                                                return orderBy == 'asc' ? -1 : (orderBy == 'dsc' ? 1 : -1)
+                                            return 0;
+                                        }
+                                        return spaceArray.sort(compare)
+                                    } 
+                                } 
+                            }
+                        }  
+                    }       
+                },   
+            }   
+        });            
+        </script>
+    </body>
+</html>

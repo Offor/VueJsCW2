@@ -1,0 +1,17 @@
+{
+    "name": "Course-Work",
+    "version": "1.0.0",
+    "description": "After School Website",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "echo \"Error: o test specified\" && exit 1"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "mongodb": "^3.6.9"
+    },
+    "author": "Blessed Offor",
+    "license": "ISC"
+}
