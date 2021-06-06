@@ -61,80 +61,78 @@ app.post('/collection/:collectionName', (req, res, next) => {
 
 
 
-app.put("/collection/:collectionName", (req, res, next) => {
-    const products = req.body.products;
-    products.forEach((lesson) => {
-        req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
-            let newSpace = existingProduct.spaces - lesson.spaces; 
-            newSpace.spaces = existingProduct.spaces;
-            return newSpace
-        }).then((newSpace) => {
-            return req.collection.updateOne(
-                {
-                    _id: new ObjectID(lesson._id),
-                },
-                {
-                    $set: {
-                        spaces: newSpace.spaces,
-                    },
-                }, (err) => {
-                    if(err) console.log(err);
-                }
-            );
-        }).then(() => {
-            let lessonCount = 0; 
-            lessonCount++;
-            if(lessonCount == products.length){
-                res.send({
-                    message: `#{lessonCount} Lesson updated succesfully`,
-                    status: true
-                });
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
-    });
-
-})
-
 // app.put("/collection/:collectionName", (req, res, next) => {
 //     const products = req.body.products;
-//    let ItemCount = 0;
 //     products.forEach((lesson) => {
 //         req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
-//             // let newSpace = existingProduct.spaces - lesson.spaces;
-//             existingProduct.spaces -= lesson.spaces;
-//             console.log(existingProduct);
-//            return existingProduct;
-          
-//         })
-//         .then((existingProduct) => {
+//             let newSpace = existingProduct.spaces - lesson.spaces; 
+//             newSpace.spaces = existingProduct.spaces;
+//             return newSpace;
+//         }).then((newSpace) => {
 //             return req.collection.updateOne(
 //                 {
 //                     _id: new ObjectID(lesson._id),
 //                 },
 //                 {
 //                     $set: {
-//                         spaces: existingProduct.spaces,
+//                         spaces: newSpace.spaces,
 //                     },
-//                 }, (err, res) => {
-//                     if (err) console.error(err);
+//                 }, (err) => {
+//                     if(err) console.log(err);
 //                 }
 //             );
 //         }).then(() => {
-//             ItemCount++;
-//             if (ItemCount == products.length) {
+//             let lessonCount = 0; 
+//             lessonCount++;
+//             if(lessonCount == products.length){
 //                 res.send({
-//                     message: `${ ItemCount } Lesson updated successfully`,
-//                     status: true,
+//                     message: `#{lessonCount} Lesson updated succesfully`,
+//                     status: true
 //                 });
 //             }
 //         }).catch((err) => {
-//             console.error(err);
+//             console.log(err);
 //         });
 //     });
 
 // })
+
+app.put("/collection/:collectionName", (req, res, next) => {
+    const products = req.body.products;
+   let lessonCount = 0;
+    products.forEach((lesson) => {
+        req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((exp) => {
+            // let newSpace = exp.spaces - lesson.spaces;
+            exp.spaces -= lesson.spaces;
+            console.log(exp);
+           return exp;
+          
+        })
+        .then((exp) => {
+            return req.collection.updateOne(
+                { _id: new ObjectID(lesson._id), },
+                {
+                    $set: {
+                        spaces: exp.spaces,
+                    },
+                }, (err, res) => {
+                    if (err) console.error(err);
+                }
+            );
+        }).then(() => {
+            lessonCount++;
+            if (lessonCount == products.length) {
+                res.send({
+                    message: 'Lesson updated',
+                    status: true,
+                });
+            }
+        }).catch((err) => {
+            console.error(err);
+        });
+    });
+
+})
 
 
 
@@ -142,7 +140,7 @@ app.put("/collection/:collectionName", (req, res, next) => {
 app.use('/images', express.static(imagePath));
 app.use(function(request, response,next) {
     response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Erro finding image, please confirm the name");
+    response.end("Error finding image, please confirm the name");
     
 });
 
