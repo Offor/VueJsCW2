@@ -9,7 +9,7 @@ var imagePath = path.resolve(__dirname, "images");
 
 app.use(express.json())
 app.use(cors())
-app.set('port', 3000)
+app.set('port', 3000);
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
@@ -99,13 +99,13 @@ app.post('/collection/:collectionName', (req, res, next) => {
 
 app.put("/collection/:collectionName", (req, res, next) => {
     const products = req.body.products;
-   let lessonCount = 0;
+   let ItemCount = 0;
     products.forEach((lesson) => {
-        req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((exp) => {
+        req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
             // let newSpace = existingProduct.spaces - lesson.spaces;
-            exp.spaces -= lesson.spaces;
-            //console.log(existingProduct);
-           return exp;
+            existingProduct.spaces -= lesson.spaces;
+            console.log(existingProduct);
+           return existingProduct;
           
         })
         .then((existingProduct) => {
@@ -115,14 +115,14 @@ app.put("/collection/:collectionName", (req, res, next) => {
                 },
                 {
                     $set: {
-                        spaces: exp.spaces,
+                        spaces: existingProduct.spaces,
                     },
                 }, (err, res) => {
                     if (err) console.error(err);
                 }
             );
         }).then(() => {
-            lessonCount++;
+            ItemCount++;
             if (ItemCount == products.length) {
                 res.send({
                     message: `${ ItemCount } Lesson updated successfully`,

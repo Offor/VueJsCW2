@@ -202,8 +202,9 @@
                         return {_id: product._id, spaces: product.spaces };
                     });
 
-                    fetch("https://individualwebcw2.herokuapp.com/collection/lessons", {
+                    fetch('https://individualwebcw2.herokuapp.com/collection/lessons', {
                         method: "PUT",
+                        //mode: 'no-cors',
                         body: JSON.stringify({products}),
                         headers: { "Content-Type": "application/json"},
                     }).then((response) => response.json()).then((res) => {
