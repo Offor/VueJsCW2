@@ -62,36 +62,75 @@ app.post('/collection/:collectionName', (req, res, next) => {
 
 
 
+// app.put("/collection/:collectionName", (req, res, next) => {
+//     const products = req.body.products;
+//     products.forEach((lesson) => {
+//         req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
+//             let newSpace = existingProduct.spaces - lesson.spaces; 
+//            return newSpace;
+//         }).then((newSpace) => {
+//             return req.collection.updateOne(
+//                 {
+//                     _id: new ObjectID(lesson._id),
+//                 },
+//                 {
+//                     $set: {
+//                         spaces: newSpace.spaces,
+//                     },
+//                 }, (err) => {
+//                     if(err) console.log(err);
+//                 }
+//             );
+//         }).then(() => {
+//             let lessonCount = 0; 
+//             lessonCount++;
+//             if(lessonCount == products.length){
+//                 res.send({
+//                     message: `#{lessonCount} Lesson updated succesfully`,
+//                     status: true
+//                 });
+//             }
+//         }).catch((err) => {
+//             console.log(err);
+//         });
+//     });
+
+// })
+
 app.put("/collection/:collectionName", (req, res, next) => {
     const products = req.body.products;
+   let ItemCount = 0;
     products.forEach((lesson) => {
         req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
-            let newSpace = existingProduct.spaces - lesson.spaces; 
-           return newSpace;
-        }).then((newSpace) => {
+            // let newSpace = existingProduct.spaces - lesson.spaces;
+            existingProduct.spaces -= lesson.spaces;
+            console.log(existingProduct);
+           return existingProduct;
+          
+        })
+        .then((existingProduct) => {
             return req.collection.updateOne(
                 {
                     _id: new ObjectID(lesson._id),
                 },
                 {
                     $set: {
-                        spaces: newSpace.spaces,
+                        spaces: existingProduct.spaces,
                     },
-                }, (err) => {
-                    if(err) console.log(err);
+                }, (err, res) => {
+                    if (err) console.error(err);
                 }
             );
         }).then(() => {
-            let lessonCount = 0; 
-            lessonCount++;
-            if(lessonCount == products.length){
+            ItemCount++;
+            if (ItemCount == products.length) {
                 res.send({
-                    message: `#{lessonCount} Lesson updated succesfully`,
-                    status: true
+                    message: `${ ItemCount } Lesson updated successfully`,
+                    status: true,
                 });
             }
         }).catch((err) => {
-            console.log(err);
+            console.error(err);
         });
     });
 
