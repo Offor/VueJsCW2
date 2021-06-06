@@ -66,7 +66,8 @@ app.put("/collection/:collectionName", (req, res, next) => {
     products.forEach((lesson) => {
         req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
             let newSpace = existingProduct.spaces - lesson.spaces; 
-           return newSpace = existingProduct.spaces;
+            newSpace = existingProduct.spaces;
+            return newSpace
         }).then((newSpace) => {
             return req.collection.updateOne(
                 {
