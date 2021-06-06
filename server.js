@@ -3,6 +3,9 @@ const app = express();
 var path = require('path')
 const ObjectID = require('mongodb').ObjectID;
 const cors = require('cors');
+var fs = require('fs');
+
+var imagePath = path.resolve(__dirname, "images");
 
 
 app.use(express.json())
@@ -61,52 +64,48 @@ app.post('/collection/:collectionName', (req, res, next) => {
 
 app.put("/collection/:collectionName", (req, res, next) => {
     const products = req.body.products;
-    let ItemCount = 0;
     products.forEach((lesson) => {
         req.collection.findOne({ _id: new ObjectID(lesson._id), }).then((existingProduct) => {
-            existingProduct.spaces -= lesson.spaces;
-            return existingProduct;
-        }).then((existingProduct) => {
+            let newSpace = existingProduct.spaces - lesson.spaces; 
+           return newSpace;
+        }).then((newSpace) => {
             return req.collection.updateOne(
                 {
                     _id: new ObjectID(lesson._id),
                 },
                 {
                     $set: {
-                        spaces: existingProduct.spaces,
+                        spaces: newSpace.spaces,
                     },
-                }, (err, res) => {
-                    if (err) console.error(err);
+                }, (err) => {
+                    if(err) console.log(err);
                 }
             );
         }).then(() => {
-            ItemCount++;
-            if (ItemCount == products.length) {
+            let lessonCount = 0; 
+            lessonCount++;
+            if(lessonCount == products.length){
                 res.send({
-                    message: `${ ItemCount } Lesson updated successfully`,
-                    status: true,
+                    message: `#{lessonCount} Lesson updated succesfully`,
+                    status: true
                 });
             }
         }).catch((err) => {
-            console.error(err);
+            console.log(err);
         });
     });
 
 })
 
-app.delete('/collection/:collectionName/:id', (req, res, next) => {
-    req.collection.deleteOne(
-        {
-            _id: ObjectID(req.params.id)
-        }, (e, result) => {
-            if(e) return next(e)
-            res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'})
-        }
-    )
-})
 
 
-
+//sends static files from the public path directory
+app.use('/images', express.static(imagePath));
+app.use(function(request, response,next) {
+    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.end("Erro finding image, please confirm the name");
+    
+});
 
 const port = process.env.PORT || 3000
 app.listen(port)
