@@ -188,7 +188,7 @@
                         }),
                     };
 
-                    fetch('http://localhost:3000/collection/order', {
+                    fetch('https://individualwebcw2.herokuapp.com/collection/order', {
                         method: "POST",
                         body: JSON.stringify(Order),
                         headers: { "Content-Type": "application/json" },
@@ -202,7 +202,7 @@
                         return {_id: product._id, spaces: product.spaces };
                     });
 
-                    fetch("http://localhost:3000/collection/lessons", {
+                    fetch("https://individualwebcw2.herokuapp.com/collection/lessons", {
                         method: "PUT",
                         body: JSON.stringify({products}),
                         headers: { "Content-Type": "application/json"},
@@ -225,7 +225,7 @@
             
             //retrieving lessons from MonogoDB Database
             created() {
-                fetch('http://localhost:3000/collection/lessons').then(
+                fetch('https://individualwebcw2.herokuapp.com/collection/lessons').then(
                     function(res) {
                         res.json().then(
                             function(json) {
